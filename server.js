@@ -8,6 +8,12 @@ var pidfile = fs.openSync("/var/tmp/node-dev.pid", "w");
 fs.writeSync(pidfile, process.pid + "");
 fs.closeSync(pidfile);
 
+var nlog = require(__dirname + '/lib/logging');
+
+function log(message) {    
+  nlog.updateAccessLog(message);    
+} 
+
 server = http.createServer(function(req, res){
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.write('<h1>dev.troisen.com</h1>');
