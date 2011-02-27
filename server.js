@@ -4,6 +4,10 @@ var sys = require("sys"),
     http = require("http"),
     io = require('socket.io');
 
+var pidfile = fs.openSync("/var/tmp/node-dev.pid", "w");
+fs.writeSync(pidfile, process.pid + "");
+fs.closeSync(pidfile);
+
 server = http.createServer(function(req, res){
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.write('<h1>dev.troisen.com</h1>');
