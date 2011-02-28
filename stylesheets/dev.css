@@ -1,0 +1,19 @@
+body {
+  font-family: Georgia, Times, "Times New Roman", serif;
+  position: relative;
+  background: #fbfbfb;
+  background-image:url('../images/bg/starfield-002599-light-blue.jpg');
+  background-position: top left;
+  background-repeat: none;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.5em;
+  color: #fff;
+} 
+
+#log {
+  font-size: small;
+  font-style: italic;
+  margin-top: 1em;
+} 

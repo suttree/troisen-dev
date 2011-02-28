@@ -23,6 +23,8 @@ server = http.createServer(function(req, res){
 var socket = io.listen(server);
 
 socket.on('connection', function(client) {
+  log("<"+client.sessionId+"> connected");
+
   client.on('message', function(evt) {
     client.broadcast('pong');
   })
