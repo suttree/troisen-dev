@@ -15,13 +15,17 @@ function log(message) {
 }
 
 server = http.createServer(function(req, res){ 
+  var cookies = new Cookies(req, res, keys);
+  var unsigned, signed, tampered;
+
+  cookies.set("unsigned", "foo", { httpOnly: false } );
+
   res.writeHead(200, {'Content-Type': 'text/html'}); 
   res.write('<h1>dev.troisen.com</h1>'); 
   res.end(); 
 });
 
 var socket = io.listen(server);
-//var socket = io.listen(server, {origins: '*:*'}); 
 
 socket.on('connection', function(client) {
   log("<"+client.sessionId+"> connected");
