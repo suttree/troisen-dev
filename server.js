@@ -15,11 +15,6 @@ function log(message) {
 }
 
 server = http.createServer(function(req, res){ 
-  var cookies = new Cookies(req, res, keys);
-  var unsigned, signed, tampered;
-
-  cookies.set("unsigned", "foo", { httpOnly: false } );
-
   res.writeHead(200, {'Content-Type': 'text/html'}); 
   res.write('<h1>dev.troisen.com</h1>'); 
   res.end(); 
@@ -31,13 +26,19 @@ socket.on('connection', function(client) {
   log("<"+client.sessionId+"> connected");
   client.send('hi');
 
+  var timeout = setInterval(function() {
+    log("<"+client.sessionId+"> sending ping");
+    client.send('ping at ' + new Date().getTime());
+  }, 1000);
+
   client.on('message', function(evt) {
-    log("<"+client.sessionId+"> "+evt);
+    log("<"+client.sessionId+"> " + JSON.stringify(evt));
     client.broadcast('hi2');
   })
 
   client.on('disconnect', function() {
     log("closed connection: " + client.sessionId);
+    clearTimeout(timeout);
     client.broadcast('bye');
   }) 
 });

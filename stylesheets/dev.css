@@ -17,3 +17,8 @@ body {
   font-style: italic;
   margin-top: 1em;
 } 
+
+#status {
+  font-size: smaller;
+  margin-top: 1em;
+}
