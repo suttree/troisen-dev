@@ -13,12 +13,12 @@ body {
 } 
 
 #log {
-  font-size: small;
+  font-size: smaller;
   font-style: italic;
   margin-top: 1em;
 } 
 
 #status {
-  font-size: smaller;
+  font-size: small;
   margin-top: 1em;
 }
