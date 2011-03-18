@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# v0.1
+
+http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js 
+startup.png
+server-static.js
+stylesheets/dev.css
+index.html
+images/favicons/space-invader.ico
+images/bg/starfield-002599-light-blue.jpg
+lib/logging.js
+lib/dev.js
+lib/socket.io/socket.io.js
+space-invader.png
