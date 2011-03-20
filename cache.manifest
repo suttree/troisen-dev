@@ -5,7 +5,9 @@ CACHE MANIFEST
 startup.png
 space-invader.png
 images/favicons/space-invader.ico
-images/bg/starfield-002599-light-blue.jpg
+images/bg/connecting.jpg
+images/bg/connected.jpg
+images/bg/disconnected.jpg
 stylesheets/dev.css
 
 # Javascript
