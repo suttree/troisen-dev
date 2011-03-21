@@ -24,11 +24,11 @@ var socket = io.listen(server);
 
 socket.on('connection', function(client) {
   log("<"+client.sessionId+"> connected");
-  client.send('hi');
+  client.send('All aboard!');
 
   var timeout = setInterval(function() {
     log("<"+client.sessionId+"> sending ping");
-    client.send('ping at ' + new Date().getTime());
+    client.send(new Date().getTime());
   }, 1000);
 
   client.on('message', function(evt) {

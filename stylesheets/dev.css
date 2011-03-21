@@ -15,11 +15,8 @@ body {
 
 #log {
   font-size: smaller;
-  font-style: italic;
   margin-top: 1em;
+  position: absolute;
+  color: #133753;
+  bottom: 0;
 } 
-
-#status {
-  font-size: small;
-  margin-top: 1em;
-}
