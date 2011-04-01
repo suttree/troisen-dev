@@ -20,3 +20,8 @@ body {
   color: #133753;
   bottom: 0;
 } 
+
+#spinner {
+  right: 5;
+  vertical-align: middle;
+}
