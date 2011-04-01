@@ -13,7 +13,7 @@ body {
   color: #fff;
 } 
 
-#log {
+#log, #status {
   font-size: smaller;
   margin-top: 1em;
   position: absolute;
@@ -21,7 +21,7 @@ body {
   bottom: 0;
 } 
 
-#spinner {
+#spinner, #status {
   right: 5;
   vertical-align: middle;
 }
