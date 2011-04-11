@@ -8,6 +8,11 @@ module ChatClient
     @list ||= []
   end
 
+  def self.ping_clients
+    ChatClient.list.each{ |c| c.send_data "ping\n" }
+    puts "-- sending ping to #{ChatClient.list.size} clients"
+  end
+
   def post_init
     @name = "anonymous_#{rand(99999)}"
     puts "-- #{@name} connected to the chat server!"
@@ -41,5 +46,7 @@ end
 
 EventMachine::run {
   EventMachine::start_server "dev.troisen.com", 1977, ChatClient
+  EventMachine::add_periodic_timer( 5 ) { ChatClient.ping_clients }
   puts 'running chat server 1977'
 }
+
