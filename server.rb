@@ -7,13 +7,6 @@ require 'eventmachine'
 require 'time'
 
 module ChatClient
-  def post_init
-    puts "-- client connected --"
-    @timer = EM::PeriodicTimer.new(0.1) {
-      send_data "Hello from TestServer at #{Time.now.iso8601}\n"
-    }
-  end
-
   def self.list
     @list ||= []
   end
@@ -27,8 +20,13 @@ module ChatClient
   end
 
   def post_init
+    #@timer = EM::PeriodicTimer.new(0.1) {
+    #  send_data "Hello from TestServer at #{Time.now.iso8601}\n"
+    #}
+
     @name = "anonymous_#{rand(99999)}"
     puts "-- #{@name} connected to the chat server!"
+
     ChatClient.list.each{ |c| c.send_data "#{@name} has joined.\n" }
     ChatClient.list << self
   end
@@ -36,6 +34,7 @@ module ChatClient
   def receive_data data
     (@buf ||= '') << data
     puts "-- received data: #{@buf}"
+
     while line = @buf.slice!(/(.+)\r?\n/)
       if line =~ %r|^/nick (.+)|
         new_name = $1.strip
@@ -58,26 +57,26 @@ module ChatClient
   end
 end
 
-#EventMachine::run {
-#  EventMachine::start_server "dev.troisen.com", 1977, ChatClient
-#  #EventMachine::add_periodic_timer( 5 ) { ChatClient.ping_clients }
-#  puts 'running chat server 1977'
-#}
-
-
-
-
-module TestServer
-  def post_init
-    puts "-- client connected --"
-    @timer = EM::PeriodicTimer.new(0.1) {
-      send_data "Hello from TestServer at #{Time.now.iso8601}\n"
-    }
-  end
-end
-
 EventMachine::run {
-  EventMachine::start_server "dev.troisen.com", 1977, TestServer
-  puts 'running test server on 1977'
+  EventMachine::start_server "dev.troisen.com", 1977, ChatClient
+  #EventMachine::add_periodic_timer( 5 ) { ChatClient.ping_clients }
+  puts 'running chat server 1977'
 }
 
+
+
+
+#module TestServer
+#  def post_init
+#    puts "-- client connected --"
+#    @timer = EM::PeriodicTimer.new(0.1) {
+#      send_data "Hello from TestServer at #{Time.now.iso8601}\n"
+#    }
+#  end
+#end
+#
+#EventMachine::run {
+#  EventMachine::start_server "dev.troisen.com", 1977, TestServer
+#  puts 'running test server on 1977'
+#}
+#
