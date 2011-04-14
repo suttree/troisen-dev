@@ -1,15 +1,28 @@
 #!/usr/bin/env ruby
 
+# EM docs - http://eventmachine.rubyforge.org/EventMachine/Connection.html#M000287
+
 require 'rubygems'
 require 'eventmachine'
+require 'time'
 
 module ChatClient
+  def post_init
+    puts "-- client connected --"
+    @timer = EM::PeriodicTimer.new(0.1) {
+      send_data "Hello from TestServer at #{Time.now.iso8601}\n"
+    }
+  end
+
   def self.list
     @list ||= []
   end
 
   def self.ping_clients
-    ChatClient.list.each{ |c| c.send_data "ping\n" }
+    ChatClient.list.each do |c| 
+      puts "-- sending ping to #{c.object_id}"
+      c.send_data 'ping'
+    end
     puts "-- sending ping to #{ChatClient.list.size} clients"
   end
 
@@ -22,6 +35,7 @@ module ChatClient
 
   def receive_data data
     (@buf ||= '') << data
+    puts "-- received data: #{@buf}"
     while line = @buf.slice!(/(.+)\r?\n/)
       if line =~ %r|^/nick (.+)|
         new_name = $1.strip
@@ -44,9 +58,26 @@ module ChatClient
   end
 end
 
+#EventMachine::run {
+#  EventMachine::start_server "dev.troisen.com", 1977, ChatClient
+#  #EventMachine::add_periodic_timer( 5 ) { ChatClient.ping_clients }
+#  puts 'running chat server 1977'
+#}
+
+
+
+
+module TestServer
+  def post_init
+    puts "-- client connected --"
+    @timer = EM::PeriodicTimer.new(0.1) {
+      send_data "Hello from TestServer at #{Time.now.iso8601}\n"
+    }
+  end
+end
+
 EventMachine::run {
-  EventMachine::start_server "dev.troisen.com", 1977, ChatClient
-  EventMachine::add_periodic_timer( 5 ) { ChatClient.ping_clients }
-  puts 'running chat server 1977'
+  EventMachine::start_server "dev.troisen.com", 1977, TestServer
+  puts 'running test server on 1977'
 }
 
