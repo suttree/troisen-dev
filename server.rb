@@ -14,9 +14,9 @@ module ChatClient
   def self.ping_clients
     ChatClient.list.each do |c| 
       puts "-- sending ping to #{c.object_id}"
-      c.send_data 'ping'
+      c.send_data "ping\n"
     end
-    puts "-- sending ping to #{ChatClient.list.size} clients"
+    puts "-- sending ping to #{ChatClient.list.size} clients\n"
   end
 
   def post_init
@@ -24,11 +24,18 @@ module ChatClient
     #  send_data "Hello from TestServer at #{Time.now.iso8601}\n"
     #}
 
+
     @name = "anonymous_#{rand(99999)}"
     puts "-- #{@name} connected to the chat server!"
 
     ChatClient.list.each{ |c| c.send_data "#{@name} has joined.\n" }
     ChatClient.list << self
+
+    #EM.next_tick {
+    #  send_data "#{@name} has joined.\n"
+    #  ChatClient.list.each{ |c| c.send_data "#{@name} has joined.\n" }
+    #  ChatClient.list << self
+    #}
   end
 
   def receive_data data
@@ -44,8 +51,9 @@ module ChatClient
         close_connection
       else
         # echo just to test
-        send_data "#{@name}: #{line}"
-        (ChatClient.list - [self]).each{ |c| c.send_data "#{@name}: #{line}" }
+        puts "sending data"
+        send_data "#{@name}: #{line}\n"
+        (ChatClient.list - [self]).each{ |c| c.send_data "#{@name}: #{line}\n" }
       end
     end
   end
@@ -59,7 +67,7 @@ end
 
 EventMachine::run {
   EventMachine::start_server "dev.troisen.com", 1977, ChatClient
-  #EventMachine::add_periodic_timer( 5 ) { ChatClient.ping_clients }
+  EventMachine::add_periodic_timer( 5 ) { ChatClient.ping_clients }
   puts 'running chat server 1977'
 }
 
