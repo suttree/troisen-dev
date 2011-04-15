@@ -28,7 +28,7 @@ module ChatClient
     @name = "anonymous_#{rand(99999)}"
     puts "-- #{@name} connected to the chat server!"
 
-    ChatClient.list.each{ |c| c.send_data "#{@name} has joined.\n" }
+    ChatClient.list.each{ |c| c.send_data "#{@name} has joined" }
     ChatClient.list << self
 
     #EM.next_tick {
@@ -52,8 +52,8 @@ module ChatClient
       else
         # echo just to test
         puts "sending data"
-        send_data "#{@name}: #{line}\n"
-        (ChatClient.list - [self]).each{ |c| c.send_data "#{@name}: #{line}\n" }
+        send_data "#{@name}: #{line}"
+        (ChatClient.list - [self]).each{ |c| c.send_data "#{@name}: #{line}" }
       end
     end
   end
