@@ -14,7 +14,7 @@ module ChatClient
   def self.ping_clients
     ChatClient.list.each do |c| 
       puts "-- sending ping to #{c.object_id}"
-      c.send_data "ping\n"
+      c.send_data "ping #{Time.now.strftime('%H:%M:%S')}"
     end
     puts "-- sending ping to #{ChatClient.list.size} clients\n"
   end
