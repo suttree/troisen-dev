@@ -16,12 +16,12 @@ module ChatClient
       puts "-- sending ping to #{c.object_id}"
       c.send_data "ping #{Time.now.strftime('%H:%M:%S')}"
     end
-    puts "-- sending ping to #{ChatClient.list.size} clients\n"
+    puts "-- sending ping to #{ChatClient.list.size} clients"
   end
 
   def post_init
     #@timer = EM::PeriodicTimer.new(0.1) {
-    #  send_data "Hello from TestServer at #{Time.now.iso8601}\n"
+    #  send_data "Hello from TestServer at #{Time.now.iso8601}"
     #}
 
 
@@ -32,8 +32,8 @@ module ChatClient
     ChatClient.list << self
 
     #EM.next_tick {
-    #  send_data "#{@name} has joined.\n"
-    #  ChatClient.list.each{ |c| c.send_data "#{@name} has joined.\n" }
+    #  send_data "#{@name} has joined."
+    #  ChatClient.list.each{ |c| c.send_data "#{@name} has joined." }
     #  ChatClient.list << self
     #}
   end
@@ -45,13 +45,13 @@ module ChatClient
     while line = @buf.slice!(/(.+)\r?\n/)
       if line =~ %r|^/nick (.+)|
         new_name = $1.strip
-        (ChatClient.list - [self]).each{ |c| c.send_data "#{@name} is now known as #{new_name}\n" }
+        (ChatClient.list - [self]).each{ |c| c.send_data "#{@name} is now known as #{new_name}" }
         @name = new_name
       elsif line =~ %r|^/quit|
         close_connection
       else
         # echo just to test
-        puts "sending data"
+        puts "sending data #{@name}: #{line}"
         send_data "#{@name}: #{line}"
         (ChatClient.list - [self]).each{ |c| c.send_data "#{@name}: #{line}" }
       end
@@ -61,7 +61,7 @@ module ChatClient
   def unbind
     puts "-- #{@name} disconnected from the echo server!"
     ChatClient.list.delete self
-    ChatClient.list.each{ |c| c.send_data "#{@name} has left.\n" }
+    ChatClient.list.each{ |c| c.send_data "#{@name} has left." }
   end
 end
 
@@ -78,7 +78,7 @@ EventMachine::run {
 #  def post_init
 #    puts "-- client connected --"
 #    @timer = EM::PeriodicTimer.new(0.1) {
-#      send_data "Hello from TestServer at #{Time.now.iso8601}\n"
+#      send_data "Hello from TestServer at #{Time.now.iso8601}"
 #    }
 #  end
 #end
