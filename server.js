@@ -43,4 +43,4 @@ socket.on('connection', function(client) {
   }) 
 });
 
-server.listen(1977, '173.45.236.98');
+server.listen(1977, "178.79.178.146");
